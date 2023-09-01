@@ -1,7 +1,7 @@
 {
   "java.project.sourcePaths": ["src"],
   "java.project.outputPath": "bin",
-  "java.project.referencedLibraries": ["lib/**/*.jar"],
+  "java.project.referencedLibraries": ["lib/**/*.jar", "ojdbc11.jar"],
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#44e4e0",
     "activityBar.background": "#44e4e0",
