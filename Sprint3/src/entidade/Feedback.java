@@ -64,6 +64,4 @@ public class Feedback {
                 + consumidor + "\nPlataforma: " + meiodoFeedback;
     }
 
-    
-
 }
