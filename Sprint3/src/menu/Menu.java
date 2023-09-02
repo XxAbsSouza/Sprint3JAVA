@@ -186,6 +186,7 @@ public class Menu {
             }
             String fb = showInputDialog("FeedBack: ");
             String data = showInputDialog("Data ");
+            String post = showInputDialog("Link do Post ");
             int meioFb = parseInt(showInputDialog(aux));
             MeiodoFeedback mf = new MeiodoFeedback(meioFb);
             do {
@@ -195,7 +196,7 @@ public class Menu {
             String nomeConsumidor = showInputDialog("Nome do Cliente ");
             id_consumidor = parseInt(showInputDialog("Id Cliente"));
             Consumidor consumidor = new Consumidor(id_consumidor, nomeConsumidor);
-            Feedback feedback = new Feedback(id, fb, data, consumidor, mf);
+            Feedback feedback = new Feedback(id, fb, data, post, consumidor, mf);
             fDAO.inserir(feedback);
         }
     }

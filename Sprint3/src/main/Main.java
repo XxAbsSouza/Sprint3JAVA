@@ -1,11 +1,12 @@
 package main;
 
+import conexao.Conexao;
 import menu.Menu;
 
 public class Main {
-    public static void main(String[] args){
-        new Menu().menu();
-        // System.out.println(new Conexao().conectar());
+    public static void main(String[] args) {
+        // new Menu().menu();
+        System.out.println(new Conexao().conectar());
 
     }
 }
