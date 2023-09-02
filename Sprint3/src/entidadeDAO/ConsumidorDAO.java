@@ -25,7 +25,7 @@ public class ConsumidorDAO {
     public void inserir(Consumidor consumidor) {
         sql = "INSERT INTO tb_consumidor(id_consumidor, nome_consumidor, nome_usuario) values(?, ?, ?)";
 
-        try (Connection connection= conexao.conectar()) {
+        try (Connection connection = conexao.conectar()) {
             ps = connection.prepareStatement(sql);
             ps.setInt(1, consumidor.getId());
             ps.setString(2, consumidor.getNomeConsumidor());
@@ -34,8 +34,9 @@ public class ConsumidorDAO {
             ps.close();
             connection.close();
         } catch (SQLException e) {
-                System.out.println("Erro ao cadastrar um consumidor " + "\n" + e);
+            System.out.println("Erro ao cadastrar um consumidor " + "\n" + e);
         }
     }
+    
 
 }

@@ -8,7 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import conexao.Conexao;
+import entidade.Consumidor;
 import entidade.Feedback;
+import entidade.MeiodoFeedback;
 
 public class FeedbackDAO {
 
@@ -44,34 +46,62 @@ public class FeedbackDAO {
     //pesquisar pelo id
     public Feedback pesquisar(int id) {
         Feedback feedback = null;
-        //FIXME
+
         sql = "select \n" + //
-                    "    e.nome, e.salario, d.nome as nome_departamento \n" + //
-                    "FROM\n" + //
-                    "    java_empregado e\n" + //
-                    "inner JOIN\n" + //
-                    "    java_departamento d\n" + //
-                    "on\n" + //
-                    "    e.id_departamento = d.id where e.id = ?";
-            try (Connection connection = conexao.conectar()) {
-                ps = connection.prepareStatement(sql);
-                ps.setInt(1, id);
-                rs = ps.executeQuery();
-                if (rs.next()) {
-                    String nome = rs.getString("nome");
-                    double salario = rs.getDouble("salario");
-                    String nomedp = rs.getString("nome_departamento");
-                    Departamento dp = new Departamento(0, nomedp);
-                    empregado = new Empregado(0, nome, salario, dp);
-                }
-                ps.close();
-                rs.close();
-
-            } catch (Exception e) {
-                System.out.println("Erro ao pesquisar o empregado " + e);
+                "    f.feedback, f.data_feedback, f.post, c.nome_consumidor as nome_consumidor, fm.nome_meio as Plataforma\n"
+                + //
+                "FROM\n" + //
+                "    tb_feedback f\n" + //
+                "inner JOIN\n" + //
+                "    tb_consumidor c\n" + //
+                "on\n" + //
+                "    f.id_consumidor = c.id_consumidor\n" + //
+                "INNER JOIN\n" + //
+                "   tb_feedback_meio fm\n" + //
+                "on\n" + //
+                "    f.id_feedback_meio = fm.id_feedback_meio\n" +
+                "where f.id_feedback = ?";
+        try (Connection connection = conexao.conectar()) {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                String feedBack = rs.getString("feedback");
+                String data_feedback = rs.getString("data_feedback");
+                String post = rs.getString("post");
+                String nome_consumidor = rs.getString("nome_consumidor");
+                String plataforma = rs.getString("Plataforma");
+                Consumidor consum = new Consumidor(0, nome_consumidor);
+                MeiodoFeedback mFeedback = new MeiodoFeedback(0, plataforma);
+                feedback = new Feedback(0, feedBack, data_feedback, post, consum, mFeedback);
             }
-        //FIXME
+            ps.close();
+            rs.close();
 
-            return feedback;
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar o feedback " + e);
+        }
+
+        return feedback;
     }
+
+    //Atualizar
+    public void atualizar(Feedback feedback) {
+            sql = "update \n" + //
+                    "    tb_feedback \n" + //
+                    "set \n" + //
+                    "     feedback = ?, data_feedback = ?, id_feedback_meio = ? \n" + //
+                    "where \n" + //
+                    "    id_feedback = ?";
+            try (Connection connection = conexao.conectar()) { 
+                ps = connection.prepareStatement(sql);
+                ps.setString(1, feedback.getFeedback());
+                ps.setString(2, feedback.getData());
+                ps.setInt(3, feedback.getMeiodoFeedback().getId());
+                ps.execute();
+                ps.close();
+            } catch (SQLException e) {
+                System.out.println("erro ao atualizar dados" + e);
+            }
+        }
 }
