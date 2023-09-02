@@ -32,7 +32,32 @@ public class MeiodofeedbackDAO {
             ps.close();
             connection.close();
         } catch (SQLException e) {
-                System.out.println("Erro ao cadastrar uma plataforma de feedback " + "\n" + e);
+            System.out.println("Erro ao cadastrar uma plataforma de feedback " + "\n" + e);
         }
     }
+    
+    //listar as plataformas em que se encontram os feedbackas
+    public List<MeiodoFeedback> listar() {
+            List<MeiodoFeedback> lista = new LinkedList<>();
+            sql = "select \n" + //
+                    "    mf.nome_meio \n" + //
+                    "FROM\n" + //
+                    "    tb_feedback_meio mf";
+            try (Connection connection = conexao.conectar()) {
+                ps = connection.prepareStatement(sql);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    String nome = rs.getString("nome_meio");
+                    MeiodoFeedback meioF = new MeiodoFeedback(0, nome);
+                    lista.add(meioF);
+                }
+                ps.close();
+                rs.close();
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("erro ao listar plataformas\n" + e);
+            }
+            return lista;
+
+        }
 }

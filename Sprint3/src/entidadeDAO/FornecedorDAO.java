@@ -2,10 +2,7 @@ package entidadeDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 
 import conexao.Conexao;
 import entidade.Fornecedor;
@@ -14,7 +11,6 @@ public class FornecedorDAO {
     private PreparedStatement ps;
     private String sql;
     private Conexao conexao;
-    private ResultSet rs;
 
     public FornecedorDAO() {
         conexao = new Conexao();

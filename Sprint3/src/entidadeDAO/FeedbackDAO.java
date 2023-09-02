@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
 
 import conexao.Conexao;
 import entidade.Consumidor;
@@ -85,23 +83,36 @@ public class FeedbackDAO {
         return feedback;
     }
 
-    //Atualizar
+    //Atualizar/alterar
     public void atualizar(Feedback feedback) {
-            sql = "update \n" + //
-                    "    tb_feedback \n" + //
-                    "set \n" + //
-                    "     feedback = ?, data_feedback = ?, id_feedback_meio = ? \n" + //
-                    "where \n" + //
-                    "    id_feedback = ?";
-            try (Connection connection = conexao.conectar()) { 
+        sql = "update \n" + //
+                "    tb_feedback \n" + //
+                "set \n" + //
+                "     feedback = ?, data_feedback = ?, id_feedback_meio = ? \n" + //
+                "where \n" + //
+                "    id_feedback = ?";
+        try (Connection connection = conexao.conectar()) {
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, feedback.getFeedback());
+            ps.setString(2, feedback.getData());
+            ps.setInt(3, feedback.getMeiodoFeedback().getId());
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("erro ao atualizar dados" + e);
+        }
+    }
+
+    //Excluir/Remover
+    public void excluir(int id) {
+            sql = "delete from tb_feedback where id_feedback = ?";
+            try (Connection connection = conexao.conectar()) {
                 ps = connection.prepareStatement(sql);
-                ps.setString(1, feedback.getFeedback());
-                ps.setString(2, feedback.getData());
-                ps.setInt(3, feedback.getMeiodoFeedback().getId());
+                ps.setInt(1, id);
                 ps.execute();
                 ps.close();
-            } catch (SQLException e) {
-                System.out.println("erro ao atualizar dados" + e);
+            } catch (Exception e) {
+                System.out.println("Erro ao excluir o feedback " + e);
             }
         }
 }
