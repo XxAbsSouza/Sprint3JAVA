@@ -38,26 +38,43 @@ public class MeiodofeedbackDAO {
     
     //listar as plataformas em que se encontram os feedbackas
     public List<MeiodoFeedback> listar() {
-            List<MeiodoFeedback> lista = new LinkedList<>();
-            sql = "select \n" + //
-                    "    mf.nome_meio \n" + //
-                    "FROM\n" + //
-                    "    tb_feedback_meio mf";
-            try (Connection connection = conexao.conectar()) {
-                ps = connection.prepareStatement(sql);
-                rs = ps.executeQuery();
-                while (rs.next()) {
-                    String nome = rs.getString("nome_meio");
-                    MeiodoFeedback meioF = new MeiodoFeedback(0, nome);
-                    lista.add(meioF);
-                }
-                ps.close();
-                rs.close();
-                connection.close();
-            } catch (SQLException e) {
-                System.out.println("erro ao listar plataformas\n" + e);
-            }
-            return lista;
+        List<MeiodoFeedback> lista = new LinkedList<>();
+        sql = "select * from tb_feedback_meio order by id_feedback_meio";
 
+        try (Connection connection = conexao.conectar()) {
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(new MeiodoFeedback(rs.getInt("id_feedback_meio"), rs.getString("nome_meio")));
+            }
+            ps.close();
+            rs.close();
+            connection.close();
+        } catch (SQLException e) {
+            System.out.println("erro ao listar plataformas\n" + e);
         }
+        return lista;
+
+    }
+
+    public boolean pesquisar(MeiodoFeedback mf) {
+
+        boolean aux = false;
+        sql = "SELECT * FROM tb_feedback_meio WHERE id_feedback_meio = ?";
+        try (Connection connection = conexao.conectar()) {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, mf.getId());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                aux = true;
+            }
+            ps.close();
+            rs.close();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar a Plataforma " + e);
+        }
+
+        return aux;
+    }
 }

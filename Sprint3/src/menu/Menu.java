@@ -6,7 +6,12 @@ import java.util.List;
 
 import entidade.Consumidor;
 import entidade.Feedback;
+import entidade.Fornecedor;
 import entidade.MeiodoFeedback;
+import entidadeDAO.ConsumidorDAO;
+import entidadeDAO.FeedbackDAO;
+import entidadeDAO.FornecedorDAO;
+import entidadeDAO.MeiodofeedbackDAO;
 import excecao.OpcaoInvalidaException;
 
 public class Menu {
@@ -55,47 +60,144 @@ public class Menu {
     }
 
     private void excluirFeedback() {
+        FeedbackDAO fDao = new FeedbackDAO();
+        int id = parseInt(showInputDialog("ID"));
+        Feedback fb = fDao.pesquisar(id)
+		if (fb == null) {
+			showMessageDialog(null, "Feedback não encontrado.");
+		} else {
+			fDao.excluir(id);
+			showMessageDialog(null, "Feedback removido com sucesso.");
+		}
     }
 
     private void alterarFeedback() {
+        FeedbackDAO fdao = new FeedbackDAO();
+        MeiodofeedbackDAO mfDAO = new MeiodofeedbackDAO();
+        int id = parseInt(showInputDialog("ID"));
+        Feedback fb = fdao.pesquisar(id);
+		String novoFb;
+		String novaData;
+		if (fb == null) {
+			showMessageDialog(null, "Feedback não encontrado.");
+		} else {
+			novoFb = showInputDialog("Novo nome");
+			novaData = showInputDialog("Nova Data");
+            List<MeiodoFeedback> lista = mfDAO.listar();
+            String aux = "";
+            for (MeiodoFeedback mf : lista) {
+                aux += mf.getId() + " " + mf.getNomeMeio() + "\n";
+            }
+            int meioFb = parseInt(showInputDialog(aux));
+            MeiodoFeedback mf = new MeiodoFeedback(meioFb, aux);
+            fb.setFeedback(novoFb);
+            fb.setData(novaData);
+            fb.setMeiodoFeedback(mf);
+            
+            fdao.atualizar(fb);
+		}
     }
 
     private void pesquisarFeedback() {
+        FeedbackDAO fDao = new FeedbackDAO();
+		int id = parseInt(showInputDialog("ID"));
+		Feedback fb = fDao.pesquisar(id);
+		if (fb == null) {
+			showMessageDialog(null, "Feedback não encontrado.");
+		} else {
+			showMessageDialog(null, fb);
+		}
     }
 
     private void listarMeioFeedback() {
+        MeiodofeedbackDAO dao = new MeiodofeedbackDAO();
+        List<MeiodoFeedback> lista = dao.listar();
+        String aux = "";
+		int count = 1;
+		for (MeiodoFeedback meio : lista) {
+			aux = aux + "\n\nPlataforma #" + count + meio;
+			count++;
+		}
+		showMessageDialog(null, aux);
     }
 
     private void cadastrarMeioFeedback() {
+        int id = parseInt(showInputDialog("ID"));
+        String nome = showInputDialog("Plataforma");
+
+        MeiodoFeedback mf = new MeiodoFeedback(id, nome);
+        MeiodofeedbackDAO dao = new MeiodofeedbackDAO();
+
+        if (dao.pesquisar(mf)) {
+			showMessageDialog(null, "Fornecedor já existe, insira um diferente");
+		} else{
+			dao.inserir(mf);
+		}
     }
 
     private void cadastrarFornecedor() {
+        //int id, String nome, String telefone, String email, String cnpj
+        int id = parseInt(showInputDialog("ID"));
+        String nome = showInputDialog("Nome");
+        String telefone = showInputDialog("Telefone");
+        String email = showInputDialog("Email");
+        String cnpj = showInputDialog("CNPJ");
+
+        Fornecedor fornecedor = new Fornecedor(id, nome, telefone, email, cnpj);
+        FornecedorDAO dao = new FornecedorDAO();
+
+        if (dao.pesquisar(fornecedor)) {
+			showMessageDialog(null, "Fornecedor já existe, insira um diferente");
+		} else{
+			dao.inserir(fornecedor);
+		}
     }
 
     private void cadastrarConsumidor() {
+        int id = parseInt(showInputDialog("ID"));
+        String nome = showInputDialog("Nome do Cliente");
+
+        Consumidor consumidor = new Consumidor(id, nome);
+        ConsumidorDAO dao = new ConsumidorDAO();
+
+        if (dao.pesquisar(consumidor)) {
+			showMessageDialog(null, "Departamento já existe, insira um diferente");
+		} else{
+			dao.inserir(consumidor);
+		}
     }
 
     private void cadastrarFeedback() {
+        MeiodofeedbackDAO mfDAO = new MeiodofeedbackDAO();
+        ConsumidorDAO cDAO = new ConsumidorDAO();
+        FeedbackDAO fDAO = new FeedbackDAO();
 
-        
-        MeiodoFeedback meioFeedback = new MeiodoFeedback(WIDTH, TOOL_TIP_TEXT_KEY);
-
-        String nome_Consumidor;
-        String nome_MeioFeedback;
+        Consumidor c;
         int id = parseInt(showInputDialog("ID"));
-		String fb = showInputDialog("FeedBack: ");
-        String data = showInputDialog("Data ");
-        //(int id, String feedback, String data, Consumidor consumidor, MeiodoFeedback meiodoFeedback)
-        
-        //FIXME
-        Feedback feedback = new Feedback(id, fb, fb, null, null);
-        //FIXME
+        int id_consumidor;
 
-		if (dao.pesquisar(departamento)) {
-			showMessageDialog(null, "Departamento já existe, insira um diferente");
-		} else{
-			dao.inserir(departamento);
-		}
+        if (fDAO.pesquisar(id) != null) {
+            showMessageDialog(null, "Feedback já existe com esse id, insira um diferente");
+        } else {
+            List<MeiodoFeedback> lista = mfDAO.listar();
+            String aux = "";
+            for (MeiodoFeedback mf : lista) {
+                aux += mf.getId() + " " + mf.getNomeMeio() + "\n";
+            }
+            String fb = showInputDialog("FeedBack: ");
+            String data = showInputDialog("Data ");
+            int meioFb = parseInt(showInputDialog(aux));
+            MeiodoFeedback mf = new MeiodoFeedback(meioFb);
+            do {
+                id_consumidor = parseInt(showInputDialog("Id Cliente"));
+                c = new Consumidor(id_consumidor, "");
+            } while (cDAO.pesquisar(c));
+            String nomeConsumidor = showInputDialog("Nome do Cliente ");
+            id_consumidor = parseInt(showInputDialog("Id Cliente"));
+            Consumidor consumidor = new Consumidor(id_consumidor, nomeConsumidor);
+            Feedback feedback = new Feedback(id, fb, data, consumidor, mf);
+            fDAO.inserir(feedback);
+        }
     }
 
     private String gerarMenu() {

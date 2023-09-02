@@ -2,6 +2,7 @@ package entidadeDAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import conexao.Conexao;
@@ -11,6 +12,7 @@ public class FornecedorDAO {
     private PreparedStatement ps;
     private String sql;
     private Conexao conexao;
+    private ResultSet rs;
 
     public FornecedorDAO() {
         conexao = new Conexao();
@@ -31,7 +33,30 @@ public class FornecedorDAO {
             ps.close();
             connection.close();
         } catch (SQLException e) {
-                System.out.println("Erro ao cadastrar um fornecedor " + "\n" + e);
+            System.out.println("Erro ao cadastrar um fornecedor " + "\n" + e);
         }
     }
+
+    public boolean pesquisar(Fornecedor fornecedor) {
+
+        boolean aux = false;
+        sql = "SELECT * FROM tb_fornecedor WHERE id_fornecedor = ?";
+        try (Connection connection = conexao.conectar()) {
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, fornecedor.getId());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                aux = true;
+            }
+            ps.close();
+            rs.close();
+
+        } catch (Exception e) {
+            System.out.println("Erro ao pesquisar o fornecedor " + e);
+        }
+
+        return aux;
+    }
 }
+
+
