@@ -51,3 +51,15 @@ ALTER TABLE tb_fornecedor ADD CONSTRAINT fornecedor__un UNIQUE ( email,
                                                                  cnpj );
 
 commit;
+
+ALTER TABLE tb_feedback
+    ADD CONSTRAINT feedback_consumidor_fk FOREIGN KEY ( id_consumidor )
+        REFERENCES tb_consumidor ( id_consumidor );
+
+commit;
+
+ALTER TABLE tb_feedback
+    ADD CONSTRAINT feedback_meio_fk FOREIGN KEY ( id_feedback_meio )
+        REFERENCES tb_feedback_meio ( id_feedback_meio );
+
+commit;
