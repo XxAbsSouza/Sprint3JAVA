@@ -1,6 +1,6 @@
 package conexao;
 import java.io.FileInputStream;
-import java.io.FileReader;
+// import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,7 +14,7 @@ public class Conexao {
 	private String password;
 		
 	public Connection conectar() {
-		Properties properties = new Properties(); //Esse properties 'e como se fosse um txt, porém uma extenção própria do java que permite a linguagem lê-lo melhor
+		Properties properties = new Properties(); 
 				
 		try(FileInputStream file = new FileInputStream("config.properties")){
 			properties.load(file);

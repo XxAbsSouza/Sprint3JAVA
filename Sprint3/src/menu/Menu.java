@@ -62,7 +62,7 @@ public class Menu {
     private void excluirFeedback() {
         FeedbackDAO fDao = new FeedbackDAO();
         int id = parseInt(showInputDialog("ID"));
-        Feedback fb = fDao.pesquisar(id)
+        Feedback fb = fDao.pesquisar(id);
 		if (fb == null) {
 			showMessageDialog(null, "Feedback não encontrado.");
 		} else {

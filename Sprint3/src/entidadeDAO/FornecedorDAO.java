@@ -20,7 +20,7 @@ public class FornecedorDAO {
 
     //inserir
     public void inserir(Fornecedor fornecedor) {
-        sql = "INSERT INTO tb_fornecedor(id_fornecedor, nome_fornecedor, telefone, email, cpf) values(?, ?, ?, ?, ?)";
+        sql = "INSERT INTO tb_fornecedor(id_fornecedor, nome_fornecedor, telefone, email, cnpj) values(?, ?, ?, ?, ?)";
 
         try (Connection connection = conexao.conectar()) {
             ps = connection.prepareStatement(sql);
