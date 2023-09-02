@@ -4,6 +4,9 @@ import static java.lang.Integer.parseInt;
 import static javax.swing.JOptionPane.*;
 import java.util.List;
 
+import entidade.Consumidor;
+import entidade.Feedback;
+import entidade.MeiodoFeedback;
 import excecao.OpcaoInvalidaException;
 
 public class Menu {
@@ -74,6 +77,25 @@ public class Menu {
 
     private void cadastrarFeedback() {
 
+        
+        MeiodoFeedback meioFeedback = new MeiodoFeedback(WIDTH, TOOL_TIP_TEXT_KEY);
+
+        String nome_Consumidor;
+        String nome_MeioFeedback;
+        int id = parseInt(showInputDialog("ID"));
+		String fb = showInputDialog("FeedBack: ");
+        String data = showInputDialog("Data ");
+        //(int id, String feedback, String data, Consumidor consumidor, MeiodoFeedback meiodoFeedback)
+        
+        //FIXME
+        Feedback feedback = new Feedback(id, fb, fb, null, null);
+        //FIXME
+
+		if (dao.pesquisar(departamento)) {
+			showMessageDialog(null, "Departamento já existe, insira um diferente");
+		} else{
+			dao.inserir(departamento);
+		}
     }
 
     private String gerarMenu() {
