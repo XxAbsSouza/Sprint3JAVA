@@ -30,6 +30,10 @@ public class Consumidor {
     public void setNomeUsuario(String nomeUsuario) {
         this.nomeUsuario = nomeUsuario;
     }
+	@Override
+	public String toString() {
+		return "\nNome de Usuario: " + nomeUsuario;
+	}
 
     
 }

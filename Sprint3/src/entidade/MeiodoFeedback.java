@@ -28,7 +28,7 @@ public class MeiodoFeedback {
 
 	@Override
 	public String toString() {
-		return "\nId=" + id + "\nNome: " + nomeMeio;
+		return "\nNome: " + nomeMeio;
 	}
     
     
