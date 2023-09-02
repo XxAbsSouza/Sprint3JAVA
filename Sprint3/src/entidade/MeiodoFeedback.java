@@ -26,5 +26,11 @@ public class MeiodoFeedback {
         this.nomeMeio = nomeMeio;
     }
 
+	@Override
+	public String toString() {
+		return "\nId=" + id + "\nNome: " + nomeMeio;
+	}
+    
+    
     
 }

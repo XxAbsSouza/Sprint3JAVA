@@ -129,7 +129,7 @@ public class Menu {
         MeiodofeedbackDAO dao = new MeiodofeedbackDAO();
 
         if (dao.pesquisar(mf)) {
-			showMessageDialog(null, "Fornecedor já existe, insira um diferente");
+			showMessageDialog(null, "Plataforma já existe, insira um diferente");
 		} else{
 			dao.inserir(mf);
 		}
@@ -155,14 +155,16 @@ public class Menu {
 
     private void cadastrarConsumidor() {
         int id = parseInt(showInputDialog("ID"));
-        String nome = showInputDialog("Nome do Cliente");
 
-        Consumidor consumidor = new Consumidor(id, nome);
+        Consumidor consumidor = new Consumidor(id, "");
         ConsumidorDAO dao = new ConsumidorDAO();
 
         if (dao.pesquisar(consumidor)) {
-			showMessageDialog(null, "Departamento já existe, insira um diferente");
+			showMessageDialog(null, "Consumidor já existe, insira um diferente");
 		} else{
+			String nomeP = showInputDialog("Nome Social");
+			String nomeU = showInputDialog("Nome do Usuário");
+			consumidor = new Consumidor(id, nomeP, nomeU);
 			dao.inserir(consumidor);
 		}
     }
@@ -189,14 +191,9 @@ public class Menu {
             String post = showInputDialog("Link do Post ");
             int meioFb = parseInt(showInputDialog(aux));
             MeiodoFeedback mf = new MeiodoFeedback(meioFb);
-            do {
-                id_consumidor = parseInt(showInputDialog("Id Cliente"));
-                c = new Consumidor(id_consumidor, "");
-            } while (cDAO.pesquisar(c));
-            String nomeConsumidor = showInputDialog("Nome do Cliente ");
             id_consumidor = parseInt(showInputDialog("Id Cliente"));
-            Consumidor consumidor = new Consumidor(id_consumidor, nomeConsumidor);
-            Feedback feedback = new Feedback(id, fb, data, post, consumidor, mf);
+            c = new Consumidor(id_consumidor, "");
+            Feedback feedback = new Feedback(id, fb, data, post, c, mf);
             fDAO.inserir(feedback);
         }
     }
