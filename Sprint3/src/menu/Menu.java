@@ -1,7 +1,6 @@
 package menu;
 
 import static java.lang.Integer.parseInt;
-import static java.lang.Double.parseDouble;
 import static javax.swing.JOptionPane.*;
 import java.util.List;
 
@@ -14,27 +13,33 @@ public class Menu {
         do {
             try {
                 opcao = parseInt(showInputDialog(gerarMenu()));
-                if (opcao < 1 || opcao > 7) {
+                if (opcao < 1 || opcao > 9) {
                     throw new OpcaoInvalidaException("Opção inválida");
                 } else {
                     switch (opcao) {
                         case 1:
-                            cadastrarDepartamento();
+                            cadastrarFeedback();
                             break;
                         case 2:
-                            cadastrarEmpregado();
+                            cadastrarConsumidor();
                             break;
                         case 3:
-                            pesquisarEmpregado();
+                            cadastrarFornecedor();
                             break;
                         case 4:
-                            listarEmpregado();
+                            cadastrarMeioFeedback();
                             break;
                         case 5:
-                            atualizarEmpregado();
+                            listarMeioFeedback();
                             break;
                         case 6:
-                            excluirEmpregado();
+                            pesquisarFeedback();
+                            break;
+                        case 7:
+                            alterarFeedback();
+                            break;
+                        case 8:
+                            excluirFeedback();
                             break;
                     }
                 }
@@ -43,43 +48,45 @@ public class Menu {
             } catch (OpcaoInvalidaException e) {
                 showMessageDialog(null, e.getMessage());
             }
-        } while (opcao != 7);
-    }
-    
-
-    private void excluirEmpregado() {
+        } while (opcao != 9);
     }
 
-
-    private void atualizarEmpregado() {
+    private void excluirFeedback() {
     }
 
-
-    private void listarEmpregado() {
+    private void alterarFeedback() {
     }
 
-
-    private void pesquisarEmpregado() {
+    private void pesquisarFeedback() {
     }
 
-
-    private void cadastrarEmpregado() {
+    private void listarMeioFeedback() {
     }
 
-
-    private void cadastrarDepartamento() {
+    private void cadastrarMeioFeedback() {
     }
 
+    private void cadastrarFornecedor() {
+    }
+
+    private void cadastrarConsumidor() {
+    }
+
+    private void cadastrarFeedback() {
+
+    }
 
     private String gerarMenu() {
 		String menu = "CONTROLE DE EMPREGADOS - ESCOLHA UMA OPÇÃO\n";
-		menu += "1. Cadastrar departamento\n";
-		menu += "2. Cadastrar empregado\n";
-		menu += "3. Pesquisar empregado\n";
-		menu += "4. Listar empregado\n";
-		menu += "5. Atualizar empregado\n";
-		menu += "6. Excluir empregado\n";
-		menu += "7. Finalizar\n";
+		menu += "1. Cadastrar FeedBack\n";
+		menu += "2. Cadastrar Consumidor\n";
+		menu += "3. Cadastrar Fornecedor\n";
+		menu += "4. Cadastrar Plataforma em que será retirado o FeedBack\n";
+		menu += "5. Listar plataformas disponíveis\n";
+		menu += "6. Pesquisar FeedBack\n";
+		menu += "7. Alterar FeedBack\n";
+		menu += "8. Excluir FeedBack\n";
+		menu += "9. Finalizar\n";
 		return menu;
 	}
 }
