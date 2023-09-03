@@ -86,19 +86,18 @@ public class FeedbackDAO {
     }
 
     //Atualizar/alterar
+    
     public void atualizar(Feedback feedback) {
-        sql = "UPDATE tb_feedback SET feedback = ? where id_feedback = ?";
-        try (Connection connection = conexao.conectar()) {
-        		ps = connection.prepareStatement(sql);
-        		System.out.println(feedback);
-        		ps.setString(1, feedback.getFeedback());
-        		ps.setInt(2, feedback.getId());
-        		ps.execute();
-        		ps.close();
-        		connection.close();
-        } catch (SQLException e) {
-            System.out.println("erro ao atualizar dados " + e);
-        }
+    		sql = "UPDATE tb_feedback set id_feedback_meio = ? where id_feedback = ?";
+    		try(Connection connection = conexao.conectar()) {
+    			ps = connection.prepareStatement(sql);
+    			ps.setInt(1, feedback.getMeiodoFeedback().getId_Meio());
+    			ps.setInt(2, feedback.getId());
+    			ps.execute();
+            ps.close();
+			} catch(SQLException e) {
+				System.out.println("erro ao atualizar FeedBack" + e);
+			}
     }
 
     //Excluir/Remover
@@ -113,25 +112,4 @@ public class FeedbackDAO {
                 System.out.println("Erro ao excluir o feedback " + e);
             }
         }
-
-    //Lista
-//    public List<Feedback> listar() {
-//        List<Feedback> lista = new LinkedList<>();
-//        sql = "select * from tb_feedback order by id_feedback";
-//
-//        try (Connection connection = conexao.conectar()) {
-//            ps = connection.prepareStatement(sql);
-//            rs = ps.executeQuery();
-//            while (rs.next()) {
-//                lista.add(new Feedback(rs.getId("id_feedback"), sql, sql, null, null));
-//            }
-//            ps.close();
-//            rs.close();
-//            connection.close();
-//        } catch (SQLException e) {
-//            System.out.println("erro ao listar plataformas\n" + e);
-//        }
-//        return lista;
-//
-//    }
 }

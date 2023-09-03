@@ -59,7 +59,7 @@ public class Menu {
         } while (opcao != 9);
     }
 
-    private void excluirFeedback() {
+	private void excluirFeedback() {
         FeedbackDAO fDao = new FeedbackDAO();
         int id = parseInt(showInputDialog("ID"));
         Feedback fb = fDao.pesquisar(id);
@@ -74,33 +74,29 @@ public class Menu {
     private void alterarFeedback() {
         FeedbackDAO fdao = new FeedbackDAO();
         MeiodofeedbackDAO mfDAO = new MeiodofeedbackDAO();
-        int id = parseInt(showInputDialog("ID"));
+        int id = parseInt(showInputDialog("ID do Feedback que deseja alterar"));
         int novoIdMeio;
         Feedback fb = fdao.pesquisar(id);
-        String novoFeedback;
 		if (fb == null) {
 			showMessageDialog(null, "Feedback não encontrado.");
 		} else {
-			novoFeedback = showInputDialog("Novo Feedback: ");
-//            List<MeiodoFeedback> lista = mfDAO.listar();
-//            String aux = "";
-//            String nomeNova = "";
-//            for (MeiodoFeedback mf : lista) {
-//                aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
-//            }
-//            novoIdMeio = parseInt(showInputDialog("Id da nova plataforma: " + aux));
-//            for (MeiodoFeedback mf : lista) {
-//                if(mf.getId_Meio() == novoIdMeio) {
-//                	nomeNova = mf.getNomeMeio();
-//                }
-//            }
-//            MeiodoFeedback novoMf = new MeiodoFeedback(0, "");
-//            novoMf.setId(novoIdMeio);
-//            novoMf.setNomeMeio(nomeNova);
-//            fb.setMeiodoFeedback(novoMf);
-//            System.out.println(fb);
-			fb = new Feedback(novoFeedback);
-			fb.setFeedback(novoFeedback);
+            List<MeiodoFeedback> lista = mfDAO.listar();
+            String aux = "";
+            String nomeNova = "";
+            for (MeiodoFeedback mf : lista) {
+                aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
+            }
+            novoIdMeio = parseInt(showInputDialog("Id da nova plataforma: \n" + aux));
+            for (MeiodoFeedback mf : lista) {
+                if(mf.getId_Meio() == novoIdMeio) {
+                	nomeNova = mf.getNomeMeio();
+                }
+            }
+            MeiodoFeedback novoMf = new MeiodoFeedback(0, "");
+            novoMf.setId(novoIdMeio);
+            novoMf.setNomeMeio(nomeNova);
+            fb.setMeiodoFeedback(novoMf);
+            System.out.println(fb);
             fdao.atualizar(fb);
 		}
     }
@@ -200,7 +196,6 @@ public class Menu {
 		        		if(lista == null) {
 		        			showMessageDialog(null, "Para dar continuidade no processo, cadastre primeiramente alguma plataforma");
 		        		} else {
-		        			
 		        			int meioFb = parseInt(showInputDialog("Id da plataforma onde se encontra o Feedback: \n" + aux));
 		        			MeiodoFeedback mf = new MeiodoFeedback(meioFb);
 		        			if(!mfDAO.pesquisar(mf))
