@@ -177,27 +177,30 @@ public class Menu {
         ConsumidorDAO cDAO = new ConsumidorDAO();
         FeedbackDAO fDAO = new FeedbackDAO();
 
-        Consumidor c;
         int id = parseInt(showInputDialog("ID"));
-        int id_consumidor;
-
-        if (fDAO.pesquisar(id) != null) {
-            showMessageDialog(null, "Feedback já existe com esse id, insira um diferente");
-        } else {
-            List<MeiodoFeedback> lista = mfDAO.listar();
-            String aux = "";
-            for (MeiodoFeedback mf : lista) {
-                aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
-            }
-            String fb = showInputDialog("FeedBack: ");
-            String data = showInputDialog("Data ");
-            String post = showInputDialog("Link do Post ");
-            int meioFb = parseInt(showInputDialog(aux));
-            MeiodoFeedback mf = new MeiodoFeedback(meioFb);
-            id_consumidor = parseInt(showInputDialog("Id Cliente"));
-            c = new Consumidor(id_consumidor, "");
-            Feedback feedback = new Feedback(id, fb, data, post, c, mf);
-            fDAO.inserir(feedback);
+        if(fDAO.pesquisar(id) != null)
+    		showMessageDialog(null, "Feedback já existe com esse id, insira um diferente");
+        else {
+        	int id_consumidor = parseInt(showInputDialog("Id do Usuário"));
+        	Consumidor c = new Consumidor(id_consumidor, "", "");
+        	
+        	if (!cDAO.pesquisar(c)) {
+        		showMessageDialog(null, "Para dar continuidade no processo, cadastre primeiramente um Consumidor com o id digitado");
+        	} else {
+        		List<MeiodoFeedback> lista = mfDAO.listar();
+        		String aux = "";
+        		for (MeiodoFeedback mf : lista) {
+        			aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
+        		}
+        		String fb = showInputDialog("FeedBack: ");
+        		String data = showInputDialog("Data ");
+        		String post = showInputDialog("Link do Post ");
+        		int meioFb = parseInt(showInputDialog(aux));
+        		MeiodoFeedback mf = new MeiodoFeedback(meioFb);
+        		c = new Consumidor(id_consumidor, "", "");
+        		Feedback feedback = new Feedback(id, fb, data, post, c, mf);
+        		fDAO.inserir(feedback);
+        	}
         }
     }
 

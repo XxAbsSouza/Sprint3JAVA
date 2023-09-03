@@ -89,8 +89,8 @@ public class FeedbackDAO {
         sql = "UPDATE tb_feedback SET id_feedback_meio = ? where id_feedback = ?";
         try (Connection connection = conexao.conectar()) {
         		ps = connection.prepareStatement(sql);
-            ps.setInt(1, feedback.getMeiodoFeedback().getId_Meio());
             ps.setInt(2, feedback.getId());
+            ps.setInt(1, feedback.getMeiodoFeedback().getId_Meio());
             ps.execute();
             ps.close();
         } catch (SQLException e) {
