@@ -77,26 +77,30 @@ public class Menu {
         int id = parseInt(showInputDialog("ID"));
         int novoIdMeio;
         Feedback fb = fdao.pesquisar(id);
+        String novoFeedback;
 		if (fb == null) {
 			showMessageDialog(null, "Feedback não encontrado.");
 		} else {
-            List<MeiodoFeedback> lista = mfDAO.listar();
-            String aux = "";
-            String nomeNova = "";
-            for (MeiodoFeedback mf : lista) {
-                aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
-            }
-            novoIdMeio = parseInt(showInputDialog("Id da nova plataforma: " + aux));
-            for (MeiodoFeedback mf : lista) {
-                if(mf.getId_Meio() == novoIdMeio) {
-                	nomeNova = mf.getNomeMeio();
-                }
-            }
-            MeiodoFeedback novoMf = new MeiodoFeedback(0, "");
-            novoMf.setId(novoIdMeio);
-            novoMf.setNomeMeio(nomeNova);
-            fb.setMeiodoFeedback(novoMf);
-            System.out.println(fb);
+			novoFeedback = showInputDialog("Novo Feedback: ");
+//            List<MeiodoFeedback> lista = mfDAO.listar();
+//            String aux = "";
+//            String nomeNova = "";
+//            for (MeiodoFeedback mf : lista) {
+//                aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
+//            }
+//            novoIdMeio = parseInt(showInputDialog("Id da nova plataforma: " + aux));
+//            for (MeiodoFeedback mf : lista) {
+//                if(mf.getId_Meio() == novoIdMeio) {
+//                	nomeNova = mf.getNomeMeio();
+//                }
+//            }
+//            MeiodoFeedback novoMf = new MeiodoFeedback(0, "");
+//            novoMf.setId(novoIdMeio);
+//            novoMf.setNomeMeio(nomeNova);
+//            fb.setMeiodoFeedback(novoMf);
+//            System.out.println(fb);
+			fb = new Feedback(novoFeedback);
+			fb.setFeedback(novoFeedback);
             fdao.atualizar(fb);
 		}
     }
@@ -177,30 +181,40 @@ public class Menu {
         ConsumidorDAO cDAO = new ConsumidorDAO();
         FeedbackDAO fDAO = new FeedbackDAO();
 
-        int id = parseInt(showInputDialog("ID"));
+        int id = parseInt(showInputDialog("ID do Feedback"));
+        
         if(fDAO.pesquisar(id) != null)
-    		showMessageDialog(null, "Feedback já existe com esse id, insira um diferente");
+    		   showMessageDialog(null, "Feedback já existe com esse id, insira um diferente");
         else {
-        	int id_consumidor = parseInt(showInputDialog("Id do Usuário"));
-        	Consumidor c = new Consumidor(id_consumidor, "", "");
-        	
-        	if (!cDAO.pesquisar(c)) {
-        		showMessageDialog(null, "Para dar continuidade no processo, cadastre primeiramente um Consumidor com o id digitado");
-        	} else {
-        		List<MeiodoFeedback> lista = mfDAO.listar();
-        		String aux = "";
-        		for (MeiodoFeedback mf : lista) {
-        			aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
-        		}
-        		String fb = showInputDialog("FeedBack: ");
-        		String data = showInputDialog("Data ");
-        		String post = showInputDialog("Link do Post ");
-        		int meioFb = parseInt(showInputDialog(aux));
-        		MeiodoFeedback mf = new MeiodoFeedback(meioFb);
-        		c = new Consumidor(id_consumidor, "", "");
-        		Feedback feedback = new Feedback(id, fb, data, post, c, mf);
-        		fDAO.inserir(feedback);
-        	}
+	        	int id_consumidor = parseInt(showInputDialog("Id do Usuário"));
+	        	Consumidor c = new Consumidor(id_consumidor, "", "");
+	        	
+		        	if (!cDAO.pesquisar(c)) {
+		        		showMessageDialog(null, "Para dar continuidade no processo, cadastre primeiramente um Consumidor com o id digitado");
+		        	} else {
+		        		List<MeiodoFeedback> lista = mfDAO.listar();
+		        		String aux = "";
+		        		for (MeiodoFeedback mf : lista) {
+		        			aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
+		        		}
+		        		if(lista == null) {
+		        			showMessageDialog(null, "Para dar continuidade no processo, cadastre primeiramente alguma plataforma");
+		        		} else {
+		        			
+		        			int meioFb = parseInt(showInputDialog("Id da plataforma onde se encontra o Feedback: \n" + aux));
+		        			MeiodoFeedback mf = new MeiodoFeedback(meioFb);
+		        			if(!mfDAO.pesquisar(mf))
+		        				showMessageDialog(null, "Para dar continuidade no processo, cadastre primeiramente uma plataforma com o id digitado");
+		        			else {
+		        				String fb = showInputDialog("FeedBack: ");
+		        				String data = showInputDialog("Data ");
+		        				String post = showInputDialog("Link do Post ");
+		        				c = new Consumidor(id_consumidor, "", "");
+		        				Feedback feedback = new Feedback(id, fb, data, post, c, mf);
+		        				fDAO.inserir(feedback);
+		        			}
+		        		}
+		        		}
         }
     }
 

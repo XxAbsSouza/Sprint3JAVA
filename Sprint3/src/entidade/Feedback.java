@@ -22,7 +22,12 @@ public class Feedback {
         this.consumidor = consumidor;
         this.meiodoFeedback = meiodoFeedback;
     }
-    public int getId() {
+    
+    public Feedback(String feedback) {
+		super();
+		this.feedback = feedback;
+	}
+	public int getId() {
         return id;
     }
     public void setId(int id) {
