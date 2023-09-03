@@ -32,7 +32,7 @@ public class FeedbackDAO {
             ps.setString(3, feedback.getData());
             ps.setString(4, feedback.getPost());
             ps.setInt(5, feedback.getConsumidor().getId());
-            ps.setInt(6, feedback.getMeiodoFeedback().getId());
+            ps.setInt(6, feedback.getMeiodoFeedback().getId_Meio());
             ps.execute();
             ps.close();
             connection.close();
@@ -46,7 +46,7 @@ public class FeedbackDAO {
         Feedback feedback = null;
 
         sql = "select \n" + //
-                "    f.feedback, f.data_feedback, f.post, c.nome_consumidor as nome_consumidor, fm.nome_meio as Plataforma\n"
+                "    f.feedback, f.data_feedback, f.post, c.nome_usuario as nome_Usuario, fm.nome_meio as Plataforma\n"
                 + //
                 "FROM\n" + //
                 "    tb_feedback f\n" + //
@@ -67,9 +67,9 @@ public class FeedbackDAO {
                 String feedBack = rs.getString("feedback");
                 String data_feedback = rs.getString("data_feedback");
                 String post = rs.getString("post");
-                String nome_consumidor = rs.getString("nome_consumidor");
+                String nomeC = rs.getString("nome_Usuario");
                 String plataforma = rs.getString("Plataforma");
-                Consumidor consum = new Consumidor(0, nome_consumidor);
+                Consumidor consum = new Consumidor(0, nomeC);
                 MeiodoFeedback mFeedback = new MeiodoFeedback(0, plataforma);
                 feedback = new Feedback(0, feedBack, data_feedback, post, consum, mFeedback);
             }
@@ -85,21 +85,16 @@ public class FeedbackDAO {
 
     //Atualizar/alterar
     public void atualizar(Feedback feedback) {
-        sql = "update \n" + //
-                "    tb_feedback \n" + //
-                "set \n" + //
-                "     feedback = ?, data_feedback = ?, id_feedback_meio = ? \n" + //
-                "where \n" + //
-                "    id_feedback = ?";
+    	System.out.println(feedback);
+        sql = "UPDATE tb_feedback SET id_feedback_meio = ? where id_feedback = ?";
         try (Connection connection = conexao.conectar()) {
-            ps = connection.prepareStatement(sql);
-            ps.setString(1, feedback.getFeedback());
-            ps.setString(2, feedback.getData());
-            ps.setInt(3, feedback.getMeiodoFeedback().getId());
+        		ps = connection.prepareStatement(sql);
+            ps.setInt(1, feedback.getMeiodoFeedback().getId_Meio());
+            ps.setInt(2, feedback.getId());
             ps.execute();
             ps.close();
         } catch (SQLException e) {
-            System.out.println("erro ao atualizar dados" + e);
+            System.out.println("erro ao atualizar dados " + e);
         }
     }
 

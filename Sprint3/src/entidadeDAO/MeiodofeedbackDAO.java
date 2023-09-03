@@ -26,7 +26,7 @@ public class MeiodofeedbackDAO {
 
         try (Connection connection = conexao.conectar()) {
             ps = connection.prepareStatement(sql);
-            ps.setInt(1, meioFeedback.getId());
+            ps.setInt(1, meioFeedback.getId_Meio());
             ps.setString(2, meioFeedback.getNomeMeio());
             ps.execute();
             ps.close();
@@ -63,7 +63,7 @@ public class MeiodofeedbackDAO {
         sql = "SELECT * FROM tb_feedback_meio WHERE id_feedback_meio = ?";
         try (Connection connection = conexao.conectar()) {
             ps = connection.prepareStatement(sql);
-            ps.setInt(1, mf.getId());
+            ps.setInt(1, mf.getId_Meio());
             rs = ps.executeQuery();
             if (rs.next()) {
                 aux = true;

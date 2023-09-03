@@ -75,25 +75,28 @@ public class Menu {
         FeedbackDAO fdao = new FeedbackDAO();
         MeiodofeedbackDAO mfDAO = new MeiodofeedbackDAO();
         int id = parseInt(showInputDialog("ID"));
+        int novoIdMeio;
         Feedback fb = fdao.pesquisar(id);
-		String novoFb;
-		String novaData;
 		if (fb == null) {
 			showMessageDialog(null, "Feedback não encontrado.");
 		} else {
-			novoFb = showInputDialog("Novo nome");
-			novaData = showInputDialog("Nova Data");
             List<MeiodoFeedback> lista = mfDAO.listar();
             String aux = "";
+            String nomeNova = "";
             for (MeiodoFeedback mf : lista) {
-                aux += mf.getId() + " " + mf.getNomeMeio() + "\n";
+                aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
             }
-            int meioFb = parseInt(showInputDialog(aux));
-            MeiodoFeedback mf = new MeiodoFeedback(meioFb, aux);
-            fb.setFeedback(novoFb);
-            fb.setData(novaData);
-            fb.setMeiodoFeedback(mf);
-            
+            novoIdMeio = parseInt(showInputDialog("Id da nova plataforma: " + aux));
+            for (MeiodoFeedback mf : lista) {
+                if(mf.getId_Meio() == novoIdMeio) {
+                	nomeNova = mf.getNomeMeio();
+                }
+            }
+            MeiodoFeedback novoMf = new MeiodoFeedback(0, "");
+            novoMf.setId(novoIdMeio);
+            novoMf.setNomeMeio(nomeNova);
+            fb.setMeiodoFeedback(novoMf);
+            System.out.println(fb);
             fdao.atualizar(fb);
 		}
     }
@@ -115,7 +118,7 @@ public class Menu {
         String aux = "";
 		int count = 1;
 		for (MeiodoFeedback meio : lista) {
-			aux = aux + "\n\nPlataforma #" + count + meio;
+			aux = aux + "\n\nPlataforma #" + count + "\n" + meio;
 			count++;
 		}
 		showMessageDialog(null, aux);
@@ -184,7 +187,7 @@ public class Menu {
             List<MeiodoFeedback> lista = mfDAO.listar();
             String aux = "";
             for (MeiodoFeedback mf : lista) {
-                aux += mf.getId() + " " + mf.getNomeMeio() + "\n";
+                aux += mf.getId_Meio() + " " + mf.getNomeMeio() + "\n";
             }
             String fb = showInputDialog("FeedBack: ");
             String data = showInputDialog("Data ");

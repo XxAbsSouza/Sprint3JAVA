@@ -60,7 +60,7 @@ public class Feedback {
     }
     @Override
     public String toString() {
-        return "Feedback: " + feedback + "\nData: " + data + "\nPost: " + post + "\nConsumidor: "
+        return "Feedback: " + feedback + "\nData: " + data + "\nPost: " + post
                 + consumidor + "\nPlataforma: " + meiodoFeedback;
     }
 
