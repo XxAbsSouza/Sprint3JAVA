@@ -71,9 +71,9 @@ public class FeedbackDAO {
                 String post = rs.getString("post");
                 String nomeC = rs.getString("nome_Usuario");
                 String plataforma = rs.getString("Plataforma");
-                Consumidor consum = new Consumidor(0, nomeC);
-                MeiodoFeedback mFeedback = new MeiodoFeedback(0, plataforma);
-                feedback = new Feedback(0, feedBack, data_feedback, post, consum, mFeedback);
+                Consumidor consum = new Consumidor(id, nomeC);
+                MeiodoFeedback mFeedback = new MeiodoFeedback(id, plataforma);
+                feedback = new Feedback(id, feedBack, data_feedback, post, consum, mFeedback);
             }
             ps.close();
             rs.close();
